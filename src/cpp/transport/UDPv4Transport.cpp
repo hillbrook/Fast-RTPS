@@ -30,7 +30,7 @@ static const uint32_t maximumMessageSize = 65500;
 static const uint32_t minimumSocketBuffer = 65536;
 static const uint8_t defaultTTL = 1;
 
-static void GetIP4s(vector<IPFinder::info_IP>& locNames, bool return_loopback = false)
+static void GetIP4s(vector<IPFinder::info_IP>& locNames, bool return_loopback = true)
 {
     IPFinder::getIPs(&locNames, return_loopback);
     auto newEnd = remove_if(locNames.begin(),
@@ -210,11 +210,15 @@ bool UDPv4Transport::OpenInputChannel(const Locator_t& locator)
         for (const auto& infoIP : locNames)
         {
             auto ip = asio::ip::address_v4::from_string(infoIP.name);
+            try {
 #if defined(ASIO_HAS_MOVE)
-            socket.set_option(ip::multicast::join_group(ip::address_v4::from_string(locator.to_IP4_string()), ip));
+                socket.set_option(ip::multicast::join_group(ip::address_v4::from_string(locator.to_IP4_string()), ip));
 #else
-            socket->set_option(ip::multicast::join_group(ip::address_v4::from_string(locator.to_IP4_string()), ip));
+                socket->set_option(ip::multicast::join_group(ip::address_v4::from_string(locator.to_IP4_string()), ip));
 #endif
+            } catch (std::exception &e) {
+                logWarning(RTPS_MSG_OUT, "Ignore nic bind mutiple ips error.");
+            }
         }
     }
 

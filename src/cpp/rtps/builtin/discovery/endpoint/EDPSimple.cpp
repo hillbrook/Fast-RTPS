@@ -129,6 +129,8 @@ bool EDPSimple::createSEDPEndpoints()
         watt.times.nackResponseDelay.fraction = 0;
         watt.times.initialHeartbeatDelay.seconds = 0;
         watt.times.initialHeartbeatDelay.fraction = 0;
+        watt.times.heartbeatPeriod.seconds = 1;
+        watt.times.heartbeatPeriod.fraction = 0;
         if(mp_RTPSParticipant->getRTPSParticipantAttributes().throughputController.bytesPerPeriod != UINT32_MAX &&
                 mp_RTPSParticipant->getRTPSParticipantAttributes().throughputController.periodMillisecs != 0)
             watt.mode = ASYNCHRONOUS_WRITER;
@@ -219,6 +221,8 @@ bool EDPSimple::createSEDPEndpoints()
         watt.times.nackResponseDelay.fraction = 0;
         watt.times.initialHeartbeatDelay.seconds = 0;
         watt.times.initialHeartbeatDelay.fraction = 0;
+        watt.times.heartbeatPeriod.seconds = 1;
+        watt.times.heartbeatPeriod.fraction = 0;
         if(mp_RTPSParticipant->getRTPSParticipantAttributes().throughputController.bytesPerPeriod != UINT32_MAX &&
                 mp_RTPSParticipant->getRTPSParticipantAttributes().throughputController.periodMillisecs != 0)
             watt.mode = ASYNCHRONOUS_WRITER;
@@ -422,7 +426,7 @@ void EDPSimple::assignRemoteEndpoints(ParticipantProxyData* pdata)
         watt.guid.guidPrefix = pdata->m_guid.guidPrefix;
         watt.guid.entityId = c_EntityId_SEDPPubWriter;
         watt.endpoint.unicastLocatorList = pdata->m_metatrafficUnicastLocatorList;
-        watt.endpoint.multicastLocatorList = pdata->m_metatrafficMulticastLocatorList;
+        //watt.endpoint.multicastLocatorList = pdata->m_metatrafficMulticastLocatorList;
         watt.endpoint.reliabilityKind = RELIABLE;
         watt.endpoint.durabilityKind = TRANSIENT_LOCAL;
         pdata->m_builtinWriters.push_back(watt);
@@ -440,7 +444,7 @@ void EDPSimple::assignRemoteEndpoints(ParticipantProxyData* pdata)
         ratt.guid.guidPrefix = pdata->m_guid.guidPrefix;
         ratt.guid.entityId = c_EntityId_SEDPPubReader;
         ratt.endpoint.unicastLocatorList = pdata->m_metatrafficUnicastLocatorList;
-        ratt.endpoint.multicastLocatorList = pdata->m_metatrafficMulticastLocatorList;
+        //ratt.endpoint.multicastLocatorList = pdata->m_metatrafficMulticastLocatorList;
         ratt.endpoint.durabilityKind = TRANSIENT_LOCAL;
         ratt.endpoint.reliabilityKind = RELIABLE;
         pdata->m_builtinReaders.push_back(ratt);
@@ -457,7 +461,7 @@ void EDPSimple::assignRemoteEndpoints(ParticipantProxyData* pdata)
         watt.guid.guidPrefix = pdata->m_guid.guidPrefix;
         watt.guid.entityId = c_EntityId_SEDPSubWriter;
         watt.endpoint.unicastLocatorList = pdata->m_metatrafficUnicastLocatorList;
-        watt.endpoint.multicastLocatorList = pdata->m_metatrafficMulticastLocatorList;
+        //watt.endpoint.multicastLocatorList = pdata->m_metatrafficMulticastLocatorList;
         watt.endpoint.reliabilityKind = RELIABLE;
         watt.endpoint.durabilityKind = TRANSIENT_LOCAL;
         pdata->m_builtinWriters.push_back(watt);
@@ -475,7 +479,7 @@ void EDPSimple::assignRemoteEndpoints(ParticipantProxyData* pdata)
         ratt.guid.guidPrefix = pdata->m_guid.guidPrefix;
         ratt.guid.entityId = c_EntityId_SEDPSubReader;
         ratt.endpoint.unicastLocatorList = pdata->m_metatrafficUnicastLocatorList;
-        ratt.endpoint.multicastLocatorList = pdata->m_metatrafficMulticastLocatorList;
+        //ratt.endpoint.multicastLocatorList = pdata->m_metatrafficMulticastLocatorList;
         ratt.endpoint.durabilityKind = TRANSIENT_LOCAL;
         ratt.endpoint.reliabilityKind = RELIABLE;
         pdata->m_builtinReaders.push_back(ratt);

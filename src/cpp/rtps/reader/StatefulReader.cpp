@@ -70,7 +70,7 @@ bool StatefulReader::matched_writer_add(RemoteWriterAttributes& wdata)
         if((*it)->m_att.guid == wdata.guid)
         {
             logInfo(RTPS_READER,"Attempting to add existing writer");
-            return false;
+            return true;
         }
     }
     WriterProxy* wp = new WriterProxy(wdata, this);
