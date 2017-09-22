@@ -54,7 +54,8 @@ StatefulWriter::StatefulWriter(RTPSParticipantImpl* pimpl,GUID_t& guid,
     mp_periodicHB(nullptr), m_times(att.times),
     all_acked_mutex_(nullptr), all_acked_(false), all_acked_cond_(nullptr),
     disableHeartbeatPiggyback_(att.disableHeartbeatPiggyback),
-    sendBufferSize_(pimpl->get_min_network_send_buffer_size()),
+    //sendBufferSize_(pimpl->get_min_network_send_buffer_size()),
+    sendBufferSize_(32 << 10),
     currentUsageSendBufferSize_(static_cast<int32_t>(pimpl->get_min_network_send_buffer_size()))
 {
     m_heartbeatCount = 0;
@@ -145,7 +146,7 @@ void StatefulWriter::unsent_change_added_to_history(CacheChange_t* change)
             // Heartbeat piggyback.
             if(!disableHeartbeatPiggyback_)
             {
-                if(mp_history->isFull())
+                if (0) //(mp_history->isFull())
                 {
                     send_heartbeat_nts_(mAllRemoteReaders, mAllShrinkedLocatorList, group);
                 }
@@ -279,8 +280,9 @@ void StatefulWriter::send_any_unsent_changes()
                         {
                             activateHeartbeatPeriod = true;
                             assert(remoteReader->mp_nackSupression != nullptr);
-                            if(allFragmentsSent)
+                            if(allFragmentsSent) {
                                 remoteReader->mp_nackSupression->restart_timer();
+                            }
                         }
                     }
                 }
@@ -319,7 +321,7 @@ void StatefulWriter::send_any_unsent_changes()
             // Heartbeat piggyback.
             if(!disableHeartbeatPiggyback_)
             {
-                if(mp_history->isFull())
+                if(0) //(mp_history->isFull())
                 {
                     send_heartbeat_nts_(mAllRemoteReaders, mAllShrinkedLocatorList, group);
                 }
@@ -333,7 +335,6 @@ void StatefulWriter::send_any_unsent_changes()
                 }
             }
         }
-
         for(auto pair : notRelevantChanges.elements())
         {
             std::vector<GUID_t> remote_readers;

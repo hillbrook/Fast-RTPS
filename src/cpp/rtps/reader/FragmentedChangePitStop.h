@@ -105,7 +105,7 @@ namespace eprosima
                  * @return If a CacheChange_t is completed with new incomming fragments, this will be returned.
                  * In other case nullptr is returned.
                  */
-                CacheChange_t* process(CacheChange_t* incoming_change, uint32_t sampleSize, uint32_t fragmentStartingNum);
+                CacheChange_t* process(CacheChange_t* incoming_change, uint32_t sampleSize, uint32_t fragmentStartingNum, bool & has_hole,CacheChange_t* & r_change);
 
                 /*!
                  * @brief Search if there is a CacheChange_t, giving SequenceNumber_t and writer GUID_t,
@@ -139,7 +139,7 @@ namespace eprosima
                 private:
 
                 std::unordered_multiset<ChangeInPit, ChangeInPit::ChangeInPitHash> changes_;
-
+                uint32_t _hole_last = 0;
                 RTPSReader* parent_;
 
                 FragmentedChangePitStop(const FragmentedChangePitStop&) NON_COPYABLE_CXX11;

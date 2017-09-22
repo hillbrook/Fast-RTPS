@@ -144,7 +144,7 @@ bool ReaderProxy::requested_changes_set(std::vector<SequenceNumber_t>& seqNumSet
         {
             ChangeForReader_t newch(*chit);
             newch.setStatus(REQUESTED);
-            newch.markAllFragmentsAsUnsent();
+            //newch.markAllFragmentsAsUnsent();
 
             auto hint = m_changesForReader.erase(chit);
 

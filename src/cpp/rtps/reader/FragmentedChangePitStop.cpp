@@ -15,10 +15,9 @@
 #include "FragmentedChangePitStop.h"
 #include <fastrtps/rtps/common/CacheChange.h>
 #include <fastrtps/rtps/reader/RTPSReader.h>
-
 using namespace eprosima::fastrtps::rtps;
 
-CacheChange_t* FragmentedChangePitStop::process(CacheChange_t* incoming_change, uint32_t sampleSize, uint32_t fragmentStartingNum)
+CacheChange_t* FragmentedChangePitStop::process(CacheChange_t* incoming_change, uint32_t sampleSize, uint32_t fragmentStartingNum, bool &has_hole, CacheChange_t *  & r_change)
 {
     CacheChange_t* returnedValue = nullptr;
 
@@ -88,13 +87,23 @@ CacheChange_t* FragmentedChangePitStop::process(CacheChange_t* incoming_change, 
     }
 
     // If was updated, check if it is completed.
+    uint32_t hole_index = 0;
     if(was_updated)
     {
         auto fit = original_change_cit->getChange()->getDataFragments()->begin();
         for(; fit != original_change_cit->getChange()->getDataFragments()->end(); ++fit)
         {
-            if(*fit == ChangeFragmentStatus_t::NOT_PRESENT)
+            ++hole_index;
+            if(*fit == ChangeFragmentStatus_t::NOT_PRESENT) {
+                if (hole_index < fragmentStartingNum) {
+                    if (hole_index != _hole_last) {
+                        _hole_last = hole_index;
+                        r_change = original_change_cit->getChange();
+                        has_hole = true;
+                    }
+               }
                 break;
+            }
         }
 
         // If it is completed, return CacheChange_t and remove information.

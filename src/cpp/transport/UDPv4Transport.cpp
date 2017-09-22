@@ -106,12 +106,13 @@ bool UDPv4Transport::init()
             socket_base::send_buffer_size option;
             socket.get_option(option);
             mConfiguration_.sendBufferSize = option.value();
-
+            std::cout << "sendBufferSize: " << mConfiguration_.sendBufferSize << std::endl;
             if(mConfiguration_.sendBufferSize < minimumSocketBuffer)
             {
                 mConfiguration_.sendBufferSize = minimumSocketBuffer;
                 mSendBufferSize = minimumSocketBuffer;
             }
+            std::cout << "sendBufferSize: " << mConfiguration_.sendBufferSize << std::endl;
         }
 
         if(mConfiguration_.receiveBufferSize == 0)
@@ -120,12 +121,15 @@ bool UDPv4Transport::init()
             socket.get_option(option);
             mConfiguration_.receiveBufferSize = option.value();
 
+            std::cout << "mConfiguration_.receiveBufferSize: " << mConfiguration_.receiveBufferSize << std::endl;
             if(mConfiguration_.receiveBufferSize < minimumSocketBuffer)
             {
                 mConfiguration_.receiveBufferSize = minimumSocketBuffer;
                 mReceiveBufferSize = minimumSocketBuffer;
             }
+            std::cout << "mConfiguration_.receiveBufferSize: " << mConfiguration_.receiveBufferSize << std::endl;
         }
+            std::cout << "mConfiguration_.receiveBufferSize: " << mConfiguration_.receiveBufferSize << std::endl;
     }
 
     if(mConfiguration_.maxMessageSize > maximumMessageSize)
@@ -417,6 +421,7 @@ asio::ip::udp::socket UDPv4Transport::OpenAndBindUnicastOutputSocket(const ip::a
 {
     ip::udp::socket socket(mService);
     socket.open(ip::udp::v4());
+    mSendBufferSize = 1 << 20;
     if(mSendBufferSize != 0)
         socket.set_option(socket_base::send_buffer_size(mSendBufferSize));
     socket.set_option(ip::multicast::hops(mConfiguration_.TTL));
@@ -452,6 +457,7 @@ asio::ip::udp::socket UDPv4Transport::OpenAndBindInputSocket(uint32_t port, bool
 {
     ip::udp::socket socket(mService);
     socket.open(ip::udp::v4());
+    mReceiveBufferSize = 1 << 20;
     if(mReceiveBufferSize != 0)
         socket.set_option(socket_base::receive_buffer_size(mReceiveBufferSize));
     if(is_multicast)

@@ -232,7 +232,9 @@ bool StatelessReader::processDataFragMsg(CacheChange_t *incomingChange, uint32_t
 
             // Fragments manager has to process incomming fragments.
             // If CacheChange_t is completed, it will be returned;
-            CacheChange_t* change_completed = fragmentedChangePitStop_->process(incomingChange, sampleSize, fragmentStartingNum);
+            bool has_hole = false;
+            CacheChange_t* tmp_cache;
+            CacheChange_t* change_completed = fragmentedChangePitStop_->process(incomingChange, sampleSize, fragmentStartingNum, has_hole, tmp_cache);
 
             // Try to remove previous CacheChange_t from PitStop.
             fragmentedChangePitStop_->try_to_remove_until(incomingChange->sequenceNumber, incomingChange->writerGUID);

@@ -117,6 +117,7 @@ bool PublisherImpl::create_new_change_with_params(ChangeKind_t changeKind, void*
         }
 
         //TODO(Ricardo) This logic in a class. Then a user of rtps layer can use it.
+        high_mark_for_frag_ = 16 << 10;
         if(high_mark_for_frag_ == 0)
         {
             uint32_t max_data_size = mp_writer->getMaxDataSize();
