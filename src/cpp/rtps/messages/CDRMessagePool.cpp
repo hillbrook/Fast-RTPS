@@ -57,12 +57,13 @@ void CDRMessagePool::allocateGroup(uint16_t payload)
 
 CDRMessagePool::~CDRMessagePool()
 {
+#if 0
 	for(std::vector<CDRMessage_t*>::iterator it=m_all_objects.begin();
 			it!=m_all_objects.end();++it)
 	{
 		delete(*it);
 	}
-
+#endif
     if(mutex_ != nullptr)
         delete mutex_;
 }

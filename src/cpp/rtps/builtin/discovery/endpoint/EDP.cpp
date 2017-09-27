@@ -159,7 +159,7 @@ bool EDP::removeWriterProxy(const GUID_t& writer)
     ParticipantProxyData* pdata = nullptr;
     WriterProxyData* wdata = nullptr;
     // Block because other thread can be removing the participant.
-    std::lock_guard<std::recursive_mutex> pguard(*mp_PDP->getMutex());
+    // std::lock_guard<std::recursive_mutex> pguard(*mp_PDP->getMutex());
     if(this->mp_PDP->lookupWriterProxyData(writer,&wdata, &pdata))
     {
         logInfo(RTPS_EDP," in topic: " << wdata->topicName());
@@ -176,7 +176,7 @@ bool EDP::removeReaderProxy(const GUID_t& reader)
     ParticipantProxyData* pdata = nullptr;
     ReaderProxyData* rdata = nullptr;
     // Block because other thread can be removing the participant.
-    std::lock_guard<std::recursive_mutex> pguard(*mp_PDP->getMutex());
+    // std::lock_guard<std::recursive_mutex> pguard(*mp_PDP->getMutex());
     if(this->mp_PDP->lookupReaderProxyData(reader,&rdata, &pdata))
     {
         logInfo(RTPS_EDP," in topic: "<<rdata->topicName());
