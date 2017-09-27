@@ -124,6 +124,7 @@ RTPSParticipantImpl::RTPSParticipantImpl(const RTPSParticipantAttributes& PParam
     for (const auto& transportDescriptor : PParam.userTransports)
         m_network_Factory.RegisterTransport(transportDescriptor.get());
 
+{
     std::lock_guard<std::recursive_mutex> guard(*mp_mutex);
     mp_userParticipant->mp_impl = this;
     Locator_t loc;
@@ -327,6 +328,7 @@ RTPSParticipantImpl::RTPSParticipantImpl(const RTPSParticipantAttributes& PParam
     // Start security
     m_security_manager.init();
 #endif
+}
 
     //START BUILTIN PROTOCOLS
     mp_builtinProtocols = new BuiltinProtocols();
