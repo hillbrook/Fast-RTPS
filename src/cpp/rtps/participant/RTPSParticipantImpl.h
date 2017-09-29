@@ -261,6 +261,7 @@ class RTPSParticipantImpl
 #endif
 
         //!ReceiverControlBlock list - encapsulates all associated resources on a Receiving element
+        std::mutex m_receive_resources_mutex;
         std::list<ReceiverControlBlock> m_receiverResourcelist;
         //!SenderResource List
         std::mutex m_send_resources_mutex;
