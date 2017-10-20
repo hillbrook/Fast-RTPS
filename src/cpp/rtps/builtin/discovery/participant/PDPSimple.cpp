@@ -637,6 +637,7 @@ bool PDPSimple::removeRemoteParticipant(GUID_t& partGUID)
             break;
         }
     }
+    guardPDP.unlock();
 
     if(pdata !=nullptr)
     {
@@ -672,7 +673,7 @@ bool PDPSimple::removeRemoteParticipant(GUID_t& partGUID)
         }
         pdata->mp_mutex->unlock();
 
-        guardPDP.unlock();
+        //guardPDP.unlock();
         guardW.unlock();
         guardR.unlock();
 
