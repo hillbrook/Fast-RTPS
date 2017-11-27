@@ -38,8 +38,7 @@ public:
 	ReaderTimes()
 	{
         initialAcknackDelay.fraction = 200*1000*1000;
-		heartbeatResponseDelay.seconds = 0;
-		heartbeatResponseDelay.fraction = 4294967 * 1; // 1ms
+		heartbeatResponseDelay.fraction = 500*1000*1000;
 	};
 	virtual ~ReaderTimes(){};
     //!Initial AckNack delay. Default value ~45ms.

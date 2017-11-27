@@ -47,8 +47,10 @@ namespace rtps {
 
 void PDPSimpleListener::onNewCacheChangeAdded(RTPSReader* /*reader*/, const CacheChange_t* const change_in)
 {
+    ParticipantProxyData m_ParticipantProxyData;
     CacheChange_t* change = (CacheChange_t*)(change_in);
     //std::lock_guard<std::recursive_mutex> rguard(*reader->getMutex());
+
     logInfo(RTPS_PDP,"SPDP Message received");
     if(change->instanceHandle == c_InstanceHandle_Unknown)
     {
@@ -151,6 +153,7 @@ void PDPSimpleListener::onNewCacheChangeAdded(RTPSReader* /*reader*/, const Cach
 
 bool PDPSimpleListener::getKey(CacheChange_t* change)
 {
+	CDRMessage_t aux_msg;
 	SerializedPayload_t* pl = &change->serializedPayload;
 	CDRMessage::initCDRMsg(&aux_msg);
 
