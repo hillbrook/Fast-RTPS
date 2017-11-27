@@ -195,8 +195,17 @@ void ReaderProxy::set_change_to_status(const SequenceNumber_t& seq_num, ChangeFo
     if(seq_num <= changesFromRLowMark_)
         return;
 
+    std::lock_guard<std::recursive_mutex> guard(*mp_mutex);
+
     auto it = m_changesForReader.find(ChangeForReader_t(seq_num));
     bool mustWakeUpAsyncThread = false;
+
+    if ((m_att.endpoint.reliabilityKind != RELIABLE)
+        && (status == ACKNOWLEDGED)) {
+        if (it != m_changesForReader.end()) {
+          m_changesForReader.erase(m_changesForReader.begin(), it);
+        }
+    }
 
     if(it != m_changesForReader.end())
     {

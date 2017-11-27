@@ -209,7 +209,9 @@ bool StatelessReader::processDataMsg(CacheChange_t *change)
 
             if(getGuid().entityId == c_EntityId_SPDPReader)
             {
+                lock.unlock();
                 mp_RTPSParticipant->assertRemoteRTPSParticipantLiveliness(change->writerGUID.guidPrefix);
+                lock.lock();
             }
         }
     }
@@ -278,7 +280,9 @@ bool StatelessReader::processDataFragMsg(CacheChange_t *incomingChange, uint32_t
                     // Assert liveliness because if it is a participant discovery info.
                     if (getGuid().entityId == c_EntityId_SPDPReader)
                     {
+                        lock.unlock();
                         mp_RTPSParticipant->assertRemoteRTPSParticipantLiveliness(incomingChange->writerGUID.guidPrefix);
+                        lock.lock();
                     }
 
                     // Release CacheChange_t.
