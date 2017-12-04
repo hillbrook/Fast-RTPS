@@ -144,7 +144,7 @@ bool ReaderProxy::requested_changes_set(std::vector<SequenceNumber_t>& seqNumSet
         {
             ChangeForReader_t newch(*chit);
             newch.setStatus(REQUESTED);
-            //newch.markAllFragmentsAsUnsent();
+            newch.markAllFragmentsAsUnsent();
 
             auto hint = m_changesForReader.erase(chit);
 
@@ -194,8 +194,6 @@ void ReaderProxy::set_change_to_status(const SequenceNumber_t& seq_num, ChangeFo
 {
     if(seq_num <= changesFromRLowMark_)
         return;
-
-    std::lock_guard<std::recursive_mutex> guard(*mp_mutex);
 
     auto it = m_changesForReader.find(ChangeForReader_t(seq_num));
     bool mustWakeUpAsyncThread = false;

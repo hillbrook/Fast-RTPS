@@ -106,13 +106,11 @@ bool UDPv4Transport::init()
             socket_base::send_buffer_size option;
             socket.get_option(option);
             mConfiguration_.sendBufferSize = option.value();
-            //std::cout << "sendBufferSize: " << mConfiguration_.sendBufferSize << std::endl;
             if(mConfiguration_.sendBufferSize < minimumSocketBuffer)
             {
                 mConfiguration_.sendBufferSize = minimumSocketBuffer;
                 mSendBufferSize = minimumSocketBuffer;
             }
-            //std::cout << "sendBufferSize: " << mConfiguration_.sendBufferSize << std::endl;
         }
 
         if(mConfiguration_.receiveBufferSize == 0)
@@ -121,15 +119,12 @@ bool UDPv4Transport::init()
             socket.get_option(option);
             mConfiguration_.receiveBufferSize = option.value();
 
-            //std::cout << "mConfiguration_.receiveBufferSize: " << mConfiguration_.receiveBufferSize << std::endl;
             if(mConfiguration_.receiveBufferSize < minimumSocketBuffer)
             {
                 mConfiguration_.receiveBufferSize = minimumSocketBuffer;
                 mReceiveBufferSize = minimumSocketBuffer;
             }
-            //std::cout << "mConfiguration_.receiveBufferSize: " << mConfiguration_.receiveBufferSize << std::endl;
         }
-            //std::cout << "mConfiguration_.receiveBufferSize: " << mConfiguration_.receiveBufferSize << std::endl;
     }
 
     if(mConfiguration_.maxMessageSize > maximumMessageSize)

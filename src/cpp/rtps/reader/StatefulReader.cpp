@@ -753,13 +753,6 @@ void StatefulReader::sendFragAck(WriterProxy *mp_WP, CacheChange_t * cit) {
         }
 
         ++mp_WP->m_nackfragCount;
-#if 0
-        struct timeval tv;
-        gettimeofday(&tv, NULL);
-        std::cout << "<<<<<<<<<<" << std::endl;
-        printf("time: %d s, %d ms. \r\n", tv.tv_sec, tv.tv_usec / 1000);
-        std::cout << "Sending NACKFRAG for sample" << cit->sequenceNumber << ": "<< frag_sns << std::endl;
-#endif
         group.add_nackfrag(mp_WP->m_att.guid, cit->sequenceNumber, frag_sns, mp_WP->m_nackfragCount, locators);
    }
 
